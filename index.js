@@ -53,6 +53,8 @@ app.post('/users', function(req, res){
 	});
 });
 
+
+
 db.sequelize.sync().then(function() {
 	http.listen(PORT, function(){
   	console.log('listening on :' + PORT);

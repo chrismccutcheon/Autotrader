@@ -7,7 +7,7 @@ socket.on('connect', function () {
 socket.on('snapshot', function (data) {
 	chart(data);
 
-	jQuery('.messages').append('<p>' + data + '<p>');
+	jQuery('#chart').append('<p>' + data + '<p>');
 });
 
 socket.on('data', function(data){
