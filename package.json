@@ -1,0 +1,28 @@
+{
+  "name": "autotrader",
+  "version": "1.0.0",
+  "description": "Stock tracking and trading application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/chrismccutcheon/Autotrader.git"
+  },
+  "author": "Christopher Michael McCutcheon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chrismccutcheon/Autotrader/issues"
+  },
+  "homepage": "https://github.com/chrismccutcheon/Autotrader#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "moment": "^2.15.1",
+    "sequelize": "^3.24.3",
+    "socket.io": "^1.4.8",
+    "sqlite3": "^3.1.4",
+    "underscore": "^1.8.3",
+    "yahoo-finance": "^0.2.14"
+  }
+}
