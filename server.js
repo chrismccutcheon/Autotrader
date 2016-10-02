@@ -6,12 +6,29 @@ var yahooFinance = require('yahoo-finance');
 var _ = require('underscore');
 var moment = require('moment');
 var db = require('./db.js');
+var login = require('./routes/routes.js');
 var bcrypt = require('bcrypt');
+var bodyParser = require('body-parser')
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
+
+var isLoggedIn = false;
 
 var PORT = process.env.PORT || 3000;
 //moment().format();
 
+//app.use(express.bodyParser());
 
+//app.use(login.requireAuthentaction);
+app.use(login.logger);
+
+
+
+app.get('/html/main.html', login.requireAuthentaction, function(req, res){
+	res.sendFile(__dirname +'/public/html/main.html');
+});
 
 app.use(express.static(__dirname + '/public'));
 
@@ -46,37 +63,31 @@ io.on('connect', function (socket) {
 
 });
 
-app.post('/users', function(req, res){
+app.post('/html/users', function(req, res){
+	console.log(req.body);
 	var body = _.pick(req.body, 'email', 'password');
-
+	console.log(body);
+	console.log('users');
 	db.user.create(body).then(function (user) {
-		res.json(user.toPublicJSON());
+		res.sendfile('./html/main.html');
+		//res.json(user.toPublicJSON());
+		console.log('user added');
 	}, function (e) {
 		res.status(400).json(e);
+		console.log('rejected');
 	});
 });
 
-app.post('/users/login', function(req, res){
+app.post('/html/users/login', function(req, res){
 	var body = _.pick(req.body, 'email', 'password');
-
-	if(typeof body.email !== 'string' || typeof body.password !== 'string'){
-		return res.status(400).send();
-	}
-	db.user.findOne({
-		where:{
-			email: body.email
-		}
-	}).then(function(user){
-		if(!user || !bcrypt.compareSync(body.password, user.get('password_hash'))){
-			return res.status(401).send();
-		}
-
-		res.json(user.toPublicJSON());
-	}), function(e){
-		res.status(500).send();
-	}
-
-	res.json(body);
+	console.log('Login');
+	db.user.authenticate(body).then(function(user){
+		isLoggedIn = true;
+		//res.json(user.toPublicJSON());
+	}, function(){
+		res.status(401).json(e);
+		console.log('rejected1');
+	});
 });
 
 db.sequelize.sync().then(function() {
