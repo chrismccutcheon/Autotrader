@@ -83,6 +83,7 @@ app.post('/html/users/login', function(req, res){
 	console.log('Login');
 	db.user.authenticate(body).then(function(user){
 		isLoggedIn = true;
+		res.header('Auth', user.generateToken('authentication')).sendFile(__dirname +'/public/html/main.html');
 		//res.json(user.toPublicJSON());
 	}, function(){
 		res.status(401).json(e);
