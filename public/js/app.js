@@ -63,3 +63,7 @@ function chart (chartData) {
         });
 
 }
+
+function hideController(){
+	$("#controller").slideToggle(200); // hide controller
+};

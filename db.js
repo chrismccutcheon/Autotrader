@@ -15,8 +15,13 @@ if (env === 'production') {
 
 var db = {};
 
+db.stock = sequelize.import(__dirname + '/models/stock.js');
 db.user = sequelize.import(__dirname + '/models/user.js');
+db.token = sequelize.import(__dirname + '/models/token.js');
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+db.stock.belongsTo(db.user);
+db.user.hasMany(db.stock)
 
 module.exports = db;
