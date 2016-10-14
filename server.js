@@ -90,13 +90,13 @@ app.post('/addstock', middleware.requireAuthentaction, function(req, res){
   })
 });
 
-app.post('/html/users', function(req, res){
+app.post('/users', function(req, res){
 	console.log(req.body);
 	var body = _.pick(req.body, 'email', 'password');
 	console.log(body);
 	console.log('users');
 	db.user.create(body).then(function (user) {
-		res.sendfile(path.resolve(__dirname +'/public/html/main.html'));
+		res.sendFile(path.resolve(__dirname +'/public/index.html'));
 		//res.json(user.toPublicJSON());
 		console.log('user added');
 	}, function (e) {
@@ -105,7 +105,7 @@ app.post('/html/users', function(req, res){
 	});
 });
 
-app.post('/html/users/login', function(req, res){
+app.post('/users/login', function(req, res){
 	var body = _.pick(req.body, 'email', 'password');
 	console.log('Login');
   var userIntance;
@@ -117,15 +117,10 @@ app.post('/html/users/login', function(req, res){
     return db.token.create({
       token: token
     });
-
-		//if(token){
-		//	res.header('Auth', //token).sendFile(path.resolve(__dirname //+'/public/html/main.html'));
-		//} else {
-		//	res.status(401).json(e);
-		//}
-		//res.json(user.toPublicJSON());
 	}).then(function(tokenInstance){
     res.header('Auth', tokenInstance.get('token')).sendFile(path.resolve(__dirname +'/public/html/main.html'));
+
+    console.log(tokenInstance.get('token'));
   }).catch( function(){
 		res.status(401).send("Invalid Login");
 	});

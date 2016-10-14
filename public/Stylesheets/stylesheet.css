@@ -1,0 +1,14 @@
+html, body{
+  height: 100%;
+}
+.formElement{
+  max-width: 130px;
+}
+
+#leftTree{
+  float: left;
+  width: 150px;
+  height: 100%;
+  border-top: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+}

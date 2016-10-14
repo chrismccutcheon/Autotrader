@@ -40,19 +40,14 @@ $form.on('submit', function(event){
 
 function chart (chartData) {
 		console.log(chartData);
-
         // Create the chart
         $('#container').highcharts('StockChart', {
-
-
             rangeSelector: {
                 selected: 1
             },
-
             title: {
                 text:  chartData.title
             },
-
             series: [{
                 name: 'AAPL',
                 data: chartData.data,
@@ -61,9 +56,4 @@ function chart (chartData) {
                 }
             }]
         });
-
 }
-
-function hideController(){
-	$("#controller").slideToggle(200); // hide controller
-};
