@@ -17,17 +17,11 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 
 var PORT = process.env.PORT || 3000;
-//moment().format();
-
-//app.use(express.bodyParser());
-
-//app.use(login.requireAuthentaction);
 
 
-
-app.get('/html/main.html', middleware.requireAuthentaction, function(req, res){
-	console.log("main");
-	res.sendFile(__dirname +'/public/html/main.html');
+app.get('/html/main', function(req, res){
+  console.log("Main");
+	app.user(express.static(__dirname +'/public/html/main.html'));
 });
 
 app.use(express.static(__dirname + '/public'));
@@ -36,12 +30,9 @@ io.on('connect', function (socket) {
 	console.log('User connected via socket.io!');
 
 	socket.on('snapshot', function (symbolsString) {
-    console.log(symbolsString);
 		var symbols = symbolsString.symbol.split(' ');
 		var startDate = symbolsString.startDate;
 		var endDate = symbolsString.endDate;
-		console.log(startDate);
-    console.log(typeof(startDate));
     yahooFinance.historical({
       symbols: symbols,
 			from:startDate,
@@ -58,9 +49,11 @@ io.on('connect', function (socket) {
 			//console.log(dataSeries);
       io.emit('data', {"title": symbols[0], "data": dataSeries});
     });
-
 	});
 
+  socket.on('', function(symbolsString){
+
+  });
 });
 
 app.get('/stocks', middleware.requireAuthentaction, function(req, res){
@@ -91,16 +84,13 @@ app.post('/addstock', middleware.requireAuthentaction, function(req, res){
 });
 
 app.post('/users', function(req, res){
-	console.log(req.body);
-	var body = _.pick(req.body, 'email', 'password');
-	console.log(body);
-	console.log('users');
+	var body = _.pick(req.body, 'email', 'password', 'firstname', 'lastname');
+	//console.log(body);
 	db.user.create(body).then(function (user) {
-		res.sendFile(path.resolve(__dirname +'/public/index.html'));
-		//res.json(user.toPublicJSON());
+		res.send({result:"success"});
 		console.log('user added');
-	}, function (e) {
-		res.status(400).json(e);
+	}, function () {
+		res.status(400).json();
 		console.log('rejected');
 	});
 });
@@ -112,15 +102,19 @@ app.post('/users/login', function(req, res){
 
 	db.user.authenticate(body).then(function(user){
 		var token = user.generateToken('authentication');
-		console.log(token);
 
     return db.token.create({
       token: token
     });
 	}).then(function(tokenInstance){
-    res.header('Auth', tokenInstance.get('token')).sendFile(path.resolve(__dirname +'/public/html/main.html'));
+    test = db.user.findByToken(tokenInstance.dataValues.token)
 
-    console.log(tokenInstance.get('token'));
+    test.then(function(user) {
+      res.send({result:"success", Auth: tokenInstance.get("token"), User: user.toPublicJSON()});
+    }, function(err) {
+      alert("Login Failed"); // Error: "It broke"
+    });
+    console.log("Logged in");
   }).catch( function(){
 		res.status(401).send("Invalid Login");
 	});
@@ -133,7 +127,7 @@ app.delete('/users/login', middleware.requireAuthentaction, function(req, res){
     res.status(500).send();
   });
 });
-
+//{force: true}
 db.sequelize.sync({force: true}).then(function() {
 	http.listen(PORT, function(){
   	console.log('listening on :' + PORT);

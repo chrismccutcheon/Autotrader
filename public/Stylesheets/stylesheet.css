@@ -1,8 +1,17 @@
 html, body{
   height: 100%;
+  width: 100%;
+  background-color: lightgray;
+}
+html{
+    position: relative;
 }
 .formElement{
   max-width: 130px;
+}
+
+.expanded{
+  height: 500px;
 }
 
 #leftTree{
@@ -11,4 +20,37 @@ html, body{
   height: 100%;
   border-top: 1px solid lightgray;
   border-right: 1px solid lightgray;
+}
+
+#container{
+  float: left;
+}
+
+#treeExpand{
+  float: left;
+  width: 40px;
+  height: 100%;
+  border-top: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+}
+
+.main_body{
+  height: 100%;
+  width: 100%;
+  background-color: lightgray;
+}
+
+#signin_body{
+  width: 350px;
+}
+
+#user{
+  margin-right: 10px;
+}
+
+.signin_input{
+  margin-top: 10px;
+}
+.nav_item{
+  margin-right: 10px;
 }
