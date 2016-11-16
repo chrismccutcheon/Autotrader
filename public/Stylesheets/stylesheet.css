@@ -13,6 +13,12 @@ html{
 .expanded{
   height: 500px;
 }
+#left-nav{
+  float: left;
+  width: 150px;
+  height: 100%;
+  background-color: #dde0e0;
+}
 
 #leftTree{
   float: left;
@@ -24,6 +30,10 @@ html{
 
 #container{
   float: left;
+}
+
+#loginAlerts{
+  background-color: #ff523c;
 }
 
 #treeExpand{

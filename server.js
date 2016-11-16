@@ -59,7 +59,7 @@ io.on('connect', function (socket) {
 app.get('/stocks', middleware.requireAuthentaction, function(req, res){
   var query = req.query;
   var where = {
-    userId: req.userId.get('id')
+    userId: req.user.get('id')
   };
   db.stock.findAll({
     where: where
@@ -70,13 +70,13 @@ app.get('/stocks', middleware.requireAuthentaction, function(req, res){
   });
 });
 
-app.post('/addstock', middleware.requireAuthentaction, function(req, res){
-  var body = _pick(req.body, 'symbol');
+app.post('/stocks', middleware.requireAuthentaction, function(req, res){
+  var body = _.pick(req.body, 'symbol', 'quantity', 'initialInvestment');
   db.stock.create(body).then(function(stock){
     req.user.addStock(stock).then(function(){
       return stock.reload();
     }).then(function(stock){
-      res.json.stock.toJSON();
+      res.send({result:"success", stock:stock.toJSON()});
     });
   }, function(e){
     res.status(400).json(e);

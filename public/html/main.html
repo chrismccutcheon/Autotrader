@@ -7,12 +7,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
+    <!-- Scripts -->
+    <script src="../js/libraries/jquery-3.1.0.min.js"></script>
+    <script src="../js/libraries/socket.io-1.4.5.js"></script>
+    <script src="../js/libraries/d3.min.js"></script>
+    <!--<script src="/js/libraries/Highstock-4.2.6/js/highstock-all.js"></script>
+    <script src="/js/libraries/Highstock-4.2.6/js/modules/exporting.js"></script>-->
+
+    <script src="../js/app.js"></script>
+    <script src="../js/layoutOperations.js"></script>
+    <script src="../js/main.js"></script>
+
     <!-- Style Sheets-->
     <link rel="stylesheet" type="text/css" href="../StyleSheets/stylesheet.css">
 
     <!-- Bootstrap CSS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
+
+
   </head>
   <body>
 
@@ -22,35 +37,43 @@
         <a class="navbar-brand" href="./html/main.html">Auto Broker</a>
         <ul class="nav navbar-nav">
           <li class="nav-item">
-            <button class="navbar-toggler" id="control" type="button" data-toggle="collapse" data-target="#controller" onclick="hideController()">
-              ☰
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#controller" aria-controls="controller" aria-expanded="false" aria-label="Toggle navigation">
+              
             </button>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="../main.html">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="../main.html">My Stocks <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/html/about.html">About</a>
+            <a class="nav-link" href="#">Browse</a>
           </li>
           <li>
-             <button class="btn btn-outline-secondary pull-xs-right" id="logout-btn" type="submit">Log Out</button>
+             <button class="btn btn-outline-secondary float-xs-right" id="logout-btn" type="submit">Log Out</button>
+          </li>
+          <li id="user" class="nav-item  float-xs-right">
+            <span id="user-text" class="navbar-text"></span>
           </li>
         </ul>
       </nav>
     </div>
 
-    <div class="spacer" style="margin-top:54px;"></div>
+    <div class="spacer" style="margin-top:58px;"></div>
 
-    <div class="container-fluid bg-faded" id="controller" style="height:3em;">
+    <div class="container-fluid bg-faded collapse" id="controller" style="height:3em;">
       <form id="getHistorical" class="form-inline pull-xs-right" style="margin-top:5px;">
         <input class="formElement form-control" type="text" placeholder="AAPL" name="symbol"/>
         <input class="formElement form-control" type="text" placeholder="2016-1-01" name="start"/>
         <input class="formElement form-control" type="text" placeholder= "2016-6-01" name="end"/>
         <input class="btn btn-outline-secondary" type="submit"/>
       </form>
+    </div>
+    <div class="container-fluid" id="browse-controller">
+      <div id="getStock" class="form-inline float-xs-right" style="margin-top:5px;">
+        <input id="symbol" class="formElement form-control" type="text" placeholder="AAPL"/>
+        <input id="quantity" class="formElement form-control" type="text" placeholder="quantity"/>
+        <input id="initialInvestment" class="formElement form-control" type="text" placeholder= "investment"/>
+        <button id="addstock" class="btn btn-outline-primary" type="submit">Submit</button>
+      </div>
     </div>
 
     <div class="container bg-faded" id="leftTree"></div>
@@ -64,16 +87,6 @@
     <div id="container"></div>
 
 
-
-
-    <script src="/js/libraries/jquery-3.1.0.min.js"></script>
-    <script src="/js/libraries/socket.io-1.4.5.js"></script>
-    <script src="/js/libraries/d3.min.js"></script>
-    <!--<script src="/js/libraries/Highstock-4.2.6/js/highstock-all.js"></script>
-    <script src="/js/libraries/Highstock-4.2.6/js/modules/exporting.js"></script>-->
-
-    <script src="/js/app.js"></script>
-    <script src="/js/layoutOperations.js"></script>
 
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>-->
 
